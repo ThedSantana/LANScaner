@@ -9,17 +9,7 @@
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:orientation="horizontal"
     android:padding="2dip">
-<!--    android:background="@drawable/row_item"-->
 
-    <ImageView
-        android:id="@+id/logo"
-        android:src="@drawable/computer"
-        android:layout_width="48dip"
-        android:layout_height="48dip"
-        android:layout_gravity="center_vertical"
-        android:paddingRight="10dip"
-        android:paddingLeft="5dip" />
-        
     <LinearLayout
         android:layout_width="0dip"
         android:layout_height="wrap_content"
@@ -54,13 +44,5 @@
             android:text="" />
             
     </LinearLayout>
-
-    <ImageView
-        android:src="@drawable/arrow_right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:paddingRight="10dip"
-        android:paddingLeft="5dip" />
     
 </LinearLayout>

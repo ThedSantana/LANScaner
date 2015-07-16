@@ -137,12 +137,10 @@ public class DefaultDiscovery extends AbstractDiscovery {
             return mRateControl.rate;
         }
 
-        if (mDiscover != null) {
-            final ActivityDiscovery discover = mDiscover.get();
-            if (discover != null) {
-                return Integer.parseInt(discover.prefs.getString(Prefs.KEY_TIMEOUT_DISCOVER,
-                        Prefs.DEFAULT_TIMEOUT_DISCOVER));
-            }
+        final ActivityDiscovery discover = mDiscover.get();
+        if (discover != null) {
+            return Integer.parseInt(discover.prefs.getString(Prefs.KEY_TIMEOUT_DISCOVER,
+                    Prefs.DEFAULT_TIMEOUT_DISCOVER));
         }
         return 1;
     }

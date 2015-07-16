@@ -80,7 +80,7 @@ final public class ActivityDiscovery extends ActivityNet {
 
         // Scan button state
         if (mDiscoveryTask != null) {
-            setButton(btn_discover, R.drawable.cancel, false);
+            setButton(btn_discover, false);
             btn_discover.setText(R.string.btn_discover_cancel);
             btn_discover.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
@@ -131,9 +131,9 @@ final public class ActivityDiscovery extends ActivityNet {
 
     protected void setButtons(boolean disable) {
         if (disable) {
-            setButtonOff(btn_discover, R.drawable.disabled);
+            setButtonOff(btn_discover);
         } else {
-            setButtonOn(btn_discover, R.drawable.discover);
+            setButtonOn(btn_discover);
         }
     }
 
@@ -166,7 +166,6 @@ final public class ActivityDiscovery extends ActivityNet {
         TextView host;
         TextView mac;
         TextView vendor;
-        ImageView logo;
     }
 
     // Custom ArrayAdapter
@@ -184,19 +183,12 @@ final public class ActivityDiscovery extends ActivityNet {
                 holder.host = (TextView) convertView.findViewById(R.id.list);
                 holder.mac = (TextView) convertView.findViewById(R.id.mac);
                 holder.vendor = (TextView) convertView.findViewById(R.id.vendor);
-                holder.logo = (ImageView) convertView.findViewById(R.id.logo);
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
             final HostBean host = hosts.get(position);
-            if (host.deviceType == HostBean.TYPE_GATEWAY) {
-                holder.logo.setImageResource(R.drawable.router);
-            } else if (host.isAlive == 1 || !host.hardwareAddress.equals(NetInfo.NOMAC)) {
-                holder.logo.setImageResource(R.drawable.computer);
-            } else {
-                holder.logo.setImageResource(R.drawable.computer_down);
-            }
+
             if (host.hostname != null && !host.hostname.equals(host.ipAddress)) {
                 holder.host.setText(host.hostname + " (" + host.ipAddress + ")");
             } else {
@@ -237,7 +229,7 @@ final public class ActivityDiscovery extends ActivityNet {
         mDiscoveryTask.setNetwork(network_ip, network_start, network_end);
         mDiscoveryTask.execute();
         btn_discover.setText(R.string.btn_discover_cancel);
-        setButton(btn_discover, R.drawable.cancel, false);
+        setButton(btn_discover, false);
         btn_discover.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 cancelTasks();
@@ -252,7 +244,7 @@ final public class ActivityDiscovery extends ActivityNet {
     public void stopDiscovering() {
         Log.e(TAG, "stopDiscovering()");
         mDiscoveryTask = null;
-        setButtonOn(btn_discover, R.drawable.discover);
+        setButtonOn(btn_discover);
         btn_discover.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 startDiscovering();
@@ -279,23 +271,21 @@ final public class ActivityDiscovery extends ActivityNet {
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
-    private void setButton(Button btn, int res, boolean disable) {
+    private void setButton(Button btn, boolean disable) {
         if (disable) {
-            setButtonOff(btn, res);
+            setButtonOff(btn);
         } else {
-            setButtonOn(btn, res);
+            setButtonOn(btn);
         }
     }
 
-    private void setButtonOff(Button b, int drawable) {
+    private void setButtonOff(Button b) {
         b.setClickable(false);
         b.setEnabled(false);
-        b.setCompoundDrawablesWithIntrinsicBounds(drawable, 0, 0, 0);
     }
 
-    private void setButtonOn(Button b, int drawable) {
+    private void setButtonOn(Button b) {
         b.setClickable(true);
         b.setEnabled(true);
-        b.setCompoundDrawablesWithIntrinsicBounds(drawable, 0, 0, 0);
     }
 }

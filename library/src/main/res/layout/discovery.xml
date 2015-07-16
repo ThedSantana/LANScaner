@@ -19,7 +19,6 @@
         android:layout_margin="5dip">
         <Button
             android:id="@+id/btn_discover"
-            android:drawableLeft="@drawable/discover"
             android:text="@string/btn_discover"
             style="@style/ButtonTop" />
     </LinearLayout>
