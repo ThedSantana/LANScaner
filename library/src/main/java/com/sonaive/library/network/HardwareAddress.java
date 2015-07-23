@@ -42,7 +42,7 @@ public class HardwareAddress {
                     }
                 }
             } else {
-                Log.e(TAG, "ip is null");
+                Log.e(TAG, "IP is null");
             }
         } catch (IOException e) {
             Log.e(TAG, "Can't open/read file ARP: " + e.getMessage());

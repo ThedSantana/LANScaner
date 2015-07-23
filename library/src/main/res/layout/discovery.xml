@@ -10,18 +10,16 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/background_material_dark"
+    android:background="#999966"
     >
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dip">
-        <Button
-            android:id="@+id/btn_discover"
-            android:text="@string/btn_discover"
-            style="@style/ButtonTop" />
-    </LinearLayout>
+    <Button
+        android:id="@+id/btn_discover"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="16dp"
+        android:text="DISCOVER"
+        />
+
     <FrameLayout
         android:layout_width="fill_parent" 
         android:layout_height="0dip"
@@ -43,37 +41,4 @@
             android:text="@string/discover_empty" />
 
     </FrameLayout>
-    <LinearLayout
-        android:id="@+id/info_container"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="10dip"
-        android:paddingLeft="10dip"
-        android:paddingRight="10dip"
-        android:paddingBottom="5dip"
-        android:background="@drawable/drawer_bg"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/info_ip"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textSize="10dip"
-            android:textColor="@android:color/white"
-            android:typeface="monospace" />
-        <TextView
-            android:id="@+id/info_in"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textSize="10dip"
-            android:typeface="monospace"
-            android:textColor="@android:color/white"
-            android:text="@string/wifi_unknown" />
-        <TextView
-            android:id="@+id/info_mo"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textSize="10dip"
-            android:textColor="@android:color/white"
-            android:typeface="monospace" />
-    </LinearLayout>
 </LinearLayout>

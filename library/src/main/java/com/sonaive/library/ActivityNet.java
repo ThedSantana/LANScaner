@@ -43,24 +43,25 @@ public abstract class ActivityNet extends FragmentActivity {
     @Override
     public void onResume() {
         super.onResume();
-        setButtons(true);
-        // Listening for network events
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-        filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
-        filter.addAction(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
-        registerReceiver(receiver, filter);
+//        setButtons(true);
+//        // Listening for network events
+//        IntentFilter filter = new IntentFilter();
+//        filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+//        filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
+//        filter.addAction(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
+//        registerReceiver(receiver, filter);
+
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        unregisterReceiver(receiver);
+//        unregisterReceiver(receiver);
     }
 
     protected abstract void setInfo();
 
-    protected abstract void setButtons(boolean disable);
+//    protected abstract void setButtons(boolean disable);
 
     protected abstract void cancelTasks();
 
@@ -124,7 +125,7 @@ public abstract class ActivityNet extends FragmentActivity {
                             info_in_str = getString(R.string.net_ssid, net.ssid);
                             info_mo_str = getString(R.string.net_mode, getString(
                                     R.string.net_mode_wifi, net.speed, WifiInfo.LINK_SPEED_UNITS));
-                            setButtons(false);
+//                            setButtons(false);
                         }
                     } else if (type == ConnectivityManager.TYPE_MOBILE) { // 3G
                         if (prefs.getBoolean(Prefs.KEY_MOBILE, Prefs.DEFAULT_MOBILE)
@@ -136,7 +137,7 @@ public abstract class ActivityNet extends FragmentActivity {
                                 info_in_str = getString(R.string.net_carrier, net.carrier);
                                 info_mo_str = getString(R.string.net_mode,
                                         getString(R.string.net_mode_mobile));
-                                setButtons(false);
+//                                setButtons(false);
                             }
                         }
                     } else if (type == 3 || type == 9) { // ETH
@@ -144,7 +145,7 @@ public abstract class ActivityNet extends FragmentActivity {
                         info_ip_str = getString(R.string.net_ip, net.ip, net.cidr, net.intf);
                         info_in_str = "";
                         info_mo_str = getString(R.string.net_mode) + getString(R.string.net_mode_eth);
-                        setButtons(false);
+//                        setButtons(false);
                         Log.i(TAG, "Ethernet connectivity detected!");
                     } else {
                         Log.i(TAG, "Connectivity unknown!");

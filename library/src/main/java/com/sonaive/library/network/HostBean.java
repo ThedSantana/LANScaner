@@ -15,14 +15,6 @@ import android.os.Parcelable;
 public class HostBean implements Parcelable {
 
     public static final String EXTRA = "extra";
-    public static final String EXTRA_POSITION = "extra_position";
-    public static final String EXTRA_HOST = "extra_host";
-    public static final String EXTRA_TIMEOUT = "network.extra_timeout";
-    public static final String EXTRA_HOSTNAME = "extra_hostname";
-    public static final String EXTRA_BANNERS = "extra_banners";
-    public static final String EXTRA_PORTSO = "extra_ports_o";
-    public static final String EXTRA_PORTSC = "extra_ports_c";
-    public static final String EXTRA_SERVICES = "extra_services";
     public static final int TYPE_GATEWAY = 0;
     public static final int TYPE_COMPUTER = 1;
 
@@ -96,4 +88,23 @@ public class HostBean implements Parcelable {
             return new HostBean[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "HostBean{" +
+                "deviceType=" + deviceType +
+                ", isAlive=" + isAlive +
+                ", position=" + position +
+                ", responseTime=" + responseTime +
+                ", ipAddress='" + ipAddress + '\'' +
+                ", hostname='" + hostname + '\'' +
+                ", hardwareAddress='" + hardwareAddress + '\'' +
+                ", nicVendor='" + nicVendor + '\'' +
+                ", os='" + os + '\'' +
+                ", services=" + services +
+                ", banners=" + banners +
+                ", portsOpen=" + portsOpen +
+                ", portsClosed=" + portsClosed +
+                '}';
+    }
 }

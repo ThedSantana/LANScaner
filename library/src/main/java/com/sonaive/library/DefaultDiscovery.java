@@ -242,9 +242,9 @@ public class DefaultDiscovery extends AbstractDiscovery {
             }
 
             // Is gateway ?
-            if (discover.net.gatewayIp.equals(host.ipAddress)) {
-                host.deviceType = HostBean.TYPE_GATEWAY;
-            }
+//            if (discover.net.gatewayIp.equals(host.ipAddress)) {
+//                host.deviceType = HostBean.TYPE_GATEWAY;
+//            }
         }
 
         publishProgress(host);
