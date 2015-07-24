@@ -5,9 +5,9 @@
 
 package com.sonaive.library.network;
 
-import java.net.InetAddress;
-
 import android.util.Log;
+
+import java.net.InetAddress;
 
 public class Ping {
 

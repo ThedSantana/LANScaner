@@ -5,16 +5,6 @@
 
 package com.sonaive.library;
 
-import java.io.IOException;
-import java.lang.IllegalArgumentException;
-import java.net.InetSocketAddress;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.net.Socket;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-
 import android.util.Log;
 
 import com.sonaive.library.network.HardwareAddress;
@@ -22,6 +12,14 @@ import com.sonaive.library.network.HostBean;
 import com.sonaive.library.network.NetInfo;
 import com.sonaive.library.network.RateControl;
 import com.sonaive.library.utils.Prefs;
+
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class DefaultDiscovery extends AbstractDiscovery {
 
@@ -156,7 +154,7 @@ public class DefaultDiscovery extends AbstractDiscovery {
             if(isCancelled()) {
                 publish(null);
             }
-            Log.e(TAG, "run="+addr);
+            Log.e(TAG, "run=" + addr);
             // Create host object
             final HostBean host = new HostBean();
             host.responseTime = getRate();
@@ -170,13 +168,13 @@ public class DefaultDiscovery extends AbstractDiscovery {
                 // Arp Check #1
                 host.hardwareAddress = HardwareAddress.getHardwareAddress(addr);
                 if(!NetInfo.NOMAC.equals(host.hardwareAddress)){
-                    Log.e(TAG, "found using arp #1 "+addr);
+                    Log.e(TAG, "found using arp #1 " + addr);
                     publish(host);
                     return;
                 }
                 // Native InetAddress check
                 if (h.isReachable(getRate())) {
-                    Log.e(TAG, "found using InetAddress ping "+addr);
+                    Log.e(TAG, "found using InetAddress ping " + addr);
                     publish(host);
                     // Set indicator and get a rate
                     if (doRateControl && mRateControl.indicator == null) {
@@ -188,7 +186,7 @@ public class DefaultDiscovery extends AbstractDiscovery {
                 // Arp Check #2
                 host.hardwareAddress = HardwareAddress.getHardwareAddress(addr);
                 if(!NetInfo.NOMAC.equals(host.hardwareAddress)){
-                    Log.e(TAG, "found using arp #2 "+addr);
+                    Log.e(TAG, "found using arp #2 " + addr);
                     publish(host);
                     return;
                 }
@@ -200,7 +198,7 @@ public class DefaultDiscovery extends AbstractDiscovery {
                     try {
                         s.bind(null);
                         s.connect(new InetSocketAddress(addr, DPORTS[i]), getRate());
-                        Log.v(TAG, "found using TCP connect "+addr+" on port=" + DPORTS[i]);
+                        Log.v(TAG, "found using TCP connect " + addr + " on port=" + DPORTS[i]);
                     } catch (IOException e) {
                     } catch (IllegalArgumentException e) {
                     } finally {
@@ -214,7 +212,7 @@ public class DefaultDiscovery extends AbstractDiscovery {
                 // Arp Check #3
                 host.hardwareAddress = HardwareAddress.getHardwareAddress(addr);
                 if(!NetInfo.NOMAC.equals(host.hardwareAddress)){
-                    Log.e(TAG, "found using arp #3 "+addr);
+                    Log.e(TAG, "found using arp #3 " + addr);
                     publish(host);
                     return;
                 }

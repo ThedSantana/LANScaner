@@ -6,11 +6,11 @@
 // Inspired by http://connectbot.googlecode.com/svn/trunk/connectbot/src/org/connectbot/bean/HostBean.java
 package com.sonaive.library.network;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class HostBean implements Parcelable {
 

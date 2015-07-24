@@ -1,13 +1,10 @@
 package com.sonaive.library;
 
-import java.lang.ref.WeakReference;
-
-import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Vibrator;
 
 import com.sonaive.library.network.HostBean;
-import com.sonaive.library.utils.Prefs;
+
+import java.lang.ref.WeakReference;
 
 public abstract class AbstractDiscovery extends AsyncTask<Void, HostBean, Void> {
 

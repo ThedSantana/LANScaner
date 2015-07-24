@@ -4,9 +4,6 @@
  */
 package com.sonaive.library;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -24,6 +21,9 @@ import android.widget.Toast;
 
 import com.sonaive.library.network.HostBean;
 import com.sonaive.library.network.NetInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ActivityDiscovery extends Activity {
 
