@@ -140,6 +140,7 @@ public class ActivityDiscovery extends Activity {
         btn_discover.setText(R.string.btn_discover_cancel);
         btn_discover.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                stopDiscovering();
             }
         });
         makeToast(R.string.discover_start);
@@ -148,13 +149,12 @@ public class ActivityDiscovery extends Activity {
 
     public void stopDiscovering() {
         Log.e(TAG, "stopDiscovering()");
+        mScanner.cancel();
         btn_discover.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 startDiscovering();
             }
         });
-        setProgressBarVisibility(false);
-        setProgressBarIndeterminateVisibility(false);
         btn_discover.setText(R.string.btn_discover);
     }
 

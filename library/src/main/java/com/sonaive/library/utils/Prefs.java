@@ -7,8 +7,6 @@ package com.sonaive.library.utils;
 
 public class Prefs {
 
-    // TODO: Show values in summary
-
     private final String TAG = "Prefs";
 
     public final static String KEY_RESOLVE_NAME = "resolve_name";

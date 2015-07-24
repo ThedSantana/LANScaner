@@ -17,7 +17,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.mcxiaoke.next.task.SimpleTaskCallback;
-import com.mcxiaoke.next.task.TaskBuilder;
+import com.mcxiaoke.next.task.TaskQueue;
 import com.sonaive.library.network.HardwareAddress;
 import com.sonaive.library.network.HostBean;
 import com.sonaive.library.network.NetInfo;
@@ -46,6 +46,10 @@ public class Scanner {
     private final static int TIMEOUT_SHUTDOWN = 10; // seconds
     private final static int THREADS = 10; //FIXME: Test, plz set in options again ?
 
+    private static Handler mHandler = new Handler(Looper.getMainLooper());
+
+    private static Scanner mInstance;
+
     private int hostsDone = 0;
     private long mIp;
     private long mStart = 0;
@@ -59,30 +63,26 @@ public class Scanner {
     private RateControl mRateControl;
 
     private List<HostBean> mHosts;
-
-    private static Scanner mInstance;
-
     private ScanningCallback mCallback;
-    private static Handler mHandler = new Handler(Looper.getMainLooper());
 
     private ConnectivityManager connMgr;
 
-    protected Context mContext;
-    protected SharedPreferences prefs;
-    protected NetInfo net;
+    private SharedPreferences prefs;
+    private NetInfo net;
     private int currentNetwork = 0;
 
-    protected String ipInfo = "";
-    protected String ssidInfo = "";
-    protected String modeInfo = "";
+    private String ipInfo = "";
+    private String ssidInfo = "";
+    private String modeInfo = "";
+    private String mTask;
+    private boolean isCancelled;
 
     private Scanner(Context context) {
         mRateControl = new RateControl();
         mHosts = new ArrayList<HostBean>();
-        mContext = context.getApplicationContext();
-        prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-        connMgr = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-        net = new NetInfo(mContext);
+        prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        net = new NetInfo(context);
     }
 
     public static Scanner getInstance(Context context) {
@@ -110,7 +110,7 @@ public class Scanner {
     }
 
     public void scan() {
-        TaskBuilder.create(new Callable<List<HostBean>>() {
+        mTask = TaskQueue.getDefault().addSerially(new Callable<List<HostBean>>() {
             @Override
             public List<HostBean> call() throws Exception {
                 Log.v(TAG, "start=" + NetInfo.getIpFromLongUnsigned(mStart) + " (" + mStart
@@ -153,21 +153,21 @@ public class Scanner {
                 }
                 mPool.shutdown();
                 try {
-                    if(!mPool.awaitTermination(TIMEOUT_SCAN, TimeUnit.SECONDS)) {
+                    if (!mPool.awaitTermination(TIMEOUT_SCAN, TimeUnit.SECONDS)) {
                         mPool.shutdownNow();
                         Log.e(TAG, "Shutting down pool");
-                        if(!mPool.awaitTermination(TIMEOUT_SHUTDOWN, TimeUnit.SECONDS)){
+                        if (!mPool.awaitTermination(TIMEOUT_SHUTDOWN, TimeUnit.SECONDS)) {
                             Log.e(TAG, "Pool did not terminate");
                         }
                     }
-                } catch (InterruptedException e){
+                } catch (InterruptedException e) {
                     Log.e(TAG, e.getMessage());
                     mPool.shutdownNow();
                     Thread.currentThread().interrupt();
                 }
                 return mHosts;
             }
-        }).callback(new SimpleTaskCallback<List<HostBean>>() {
+        }, new SimpleTaskCallback<List<HostBean>>() {
 
             @Override
             public void onTaskSuccess(final List<HostBean> list, Bundle extras) {
@@ -186,7 +186,26 @@ public class Scanner {
             public void onTaskFailure(Throwable ex, Bundle extras) {
                 super.onTaskFailure(ex, extras);
             }
-        }).with(this).serial(true).start();
+        }, this);
+        isCancelled = false;
+    }
+
+    public void cancel() {
+        if (mTask != null) {
+            TaskQueue.getDefault().cancel(mTask);
+            isCancelled = true;
+            hostsDone = 0;
+            mHosts.clear();
+            if (mPool != null) {
+                synchronized (mPool) {
+                    mPool.shutdownNow();
+                }
+            }
+        }
+    }
+
+    private boolean isCancelled() {
+        return isCancelled;
     }
 
     private void launch(long i) {
@@ -232,9 +251,10 @@ public class Scanner {
         }
 
         public void run() {
-//            if(isCancelled()) {
-//                publish(null);
-//            }
+            if(isCancelled()) {
+                publish(null);
+                return;
+            }
             Log.d(TAG, "run = " + addr);
             // Create host object
             final HostBean host = new HostBean();
@@ -388,10 +408,10 @@ public class Scanner {
                                 + context.getString(R.string.net_mode_unknown);
                     }
                 } else {
-//                    cancelTasks();
+                    cancel();
                 }
             } else {
-//                cancelTasks();
+                cancel();
             }
 
             // Always update network info
@@ -406,7 +426,7 @@ public class Scanner {
                 currentNetwork = net.hashCode();
 
                 // Cancel running tasks
-//                cancelTasks();
+                cancel();
             } else {
                 return;
             }
